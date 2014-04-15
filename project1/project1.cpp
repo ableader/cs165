@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <cstdlib>
 #include "COMPARE.c"
 using namespace std;
 
@@ -29,10 +30,17 @@ template <typename T>
 int partition(vector<T>& list, int left, int right, int pivotIndex);
 
 int main() {
+//	int arr[] = { 4, 3, 1, 2, 9, 8, 6, 7, 5 };
+//	vector<int> v;
+//	for (int i=0; i < 9; ++i)
+//		v.push_back(arr[i]);
+//	int found = quickSelect(v, 0, 8, 8);
+//	cout << "found " << found << endl;
+//	cout << "result = " << vectorToString(v) << endl;
 	int total = 0;
-	int max = 10;
+	int max = 1000;
 	for (int i=0; i < max; ++i) {
-		int c = doalg(15, 3);
+		int c = doalg(10000, 40);
 		//cout << "comparison = " << c << endl;
 		total += c;
 	}
@@ -49,17 +57,22 @@ int doalg(int n, int k)
 		indexArray.push_back(i+1);
 	}
 
-	cout << "indexArray = " << vectorToString(indexArray) << endl;
+	int found = quickSelect(indexArray, 0, indexArray.size()-1, n-1-k);
+//	cout << "found = " << found << endl;
+//	cout << "indexArray = " << vectorToString(indexArray) << endl;/
 
+	vector<int> partialSort;
+	for (unsigned int i=found; i < indexArray.size(); ++i) {
+		partialSort.push_back(indexArray[i]);
+	}
 
+	vector<int> result = quickSort(partialSort);//(indexArray);
+	int* best = new int[k+1];
+	for (int i=1; i <= k; ++i) {
+		best[i] = result[i-1];
+	}
 
-//	vector<int> result = quickSort(indexArray);
-//	int* best = new int[k+1];
-//	for (int i=1; i <= k; ++i) {
-//		best[i] = result[i-1];
-//	}
-//
-//	cout << "result = " << vectorToString(result) << endl;
+	//cout << "result = " << vectorToString(result) << endl;
 
 	int comparisons = COMPARE(-1, k, best);
 	return comparisons;
@@ -163,16 +176,16 @@ template <typename T>
 T quickSelect(vector<T>& list, int left, int right, int n)
 {
 	if (left == right)
-		return list[left];
-	int pivotIndex = (right - left) / 2;
+		return left;//list[left];
+	int pivotIndex = left + (rand() % (int)(right - left + 1));
 	pivotIndex = partition(list, left, right, pivotIndex);
 
-	if (COMPARE(n, pivotIndex) == 1)
+	if (pivotIndex == n)
+		return n;//list[n];
+	else if (n < pivotIndex)
 		return quickSelect(list, left, pivotIndex-1, n);
-	else if (COMPARE(n, pivotIndex) == 2)
-		return quickSelect(list, pivotIndex+1, right, n);
 	else
-		return list[n];
+		return quickSelect(list, pivotIndex+1, right, n);
 }
 
 template <typename T>
@@ -187,7 +200,7 @@ int partition(vector<T>& list, int left, int right, int pivotIndex)
 
 	int storeIndex = left;
 	for (int i=left; i < right; ++i) {
-		if (COMPARE(list[i], pivotValue) == 1) {
+		if (COMPARE(list[i], pivotValue) == 2) { //(list[i] < pivotValue) {
 			T tmp = list[i];
 			list[i] = list[storeIndex];
 			list[storeIndex++] = tmp;
