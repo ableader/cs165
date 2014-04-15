@@ -30,18 +30,10 @@ template <typename T>
 int partition(vector<T>& list, int left, int right, int pivotIndex);
 
 int main() {
-//	int arr[] = { 4, 3, 1, 2, 9, 8, 6, 7, 5 };
-//	vector<int> v;
-//	for (int i=0; i < 9; ++i)
-//		v.push_back(arr[i]);
-//	int found = quickSelect(v, 0, 8, 8);
-//	cout << "found " << found << endl;
-//	cout << "result = " << vectorToString(v) << endl;
 	int total = 0;
 	int max = 1000;
 	for (int i=0; i < max; ++i) {
-		int c = doalg(10000, 40);
-		//cout << "comparison = " << c << endl;
+		int c = doalg(10000, 500);
 		total += c;
 	}
 	cout << "average = " << (double)total / max << endl;
@@ -58,21 +50,17 @@ int doalg(int n, int k)
 	}
 
 	int found = quickSelect(indexArray, 0, indexArray.size()-1, n-1-k);
-//	cout << "found = " << found << endl;
-//	cout << "indexArray = " << vectorToString(indexArray) << endl;/
 
 	vector<int> partialSort;
-	for (unsigned int i=found; i < indexArray.size(); ++i) {
+	for (unsigned int i=found+1; i < indexArray.size(); ++i) {
 		partialSort.push_back(indexArray[i]);
 	}
 
-	vector<int> result = quickSort(partialSort);//(indexArray);
+	vector<int> result = quickSort(partialSort);
 	int* best = new int[k+1];
 	for (int i=1; i <= k; ++i) {
 		best[i] = result[i-1];
 	}
-
-	//cout << "result = " << vectorToString(result) << endl;
 
 	int comparisons = COMPARE(-1, k, best);
 	return comparisons;
@@ -135,27 +123,23 @@ template <typename T>
 vector<T> merge(vector<T>& left, vector<T>& right)
 {
 	vector<T> result;
-	unsigned int left_it = 0, right_it = 0;
+	unsigned int i = 0, j = 0;
 
-	while (left_it < left.size() && right_it < right.size()) {
-		if (COMPARE(left[left_it], right[right_it]) == 1) {//(left[left_it] < right[right_it]) {
-			result.push_back(left[left_it]);
-			left_it++;
+	while (i < left.size() && j < right.size()) {
+		if (COMPARE(left[i], right[j]) == 1) {
+			result.push_back(left[i++]);
 		}
 		else {
-			result.push_back(right[right_it]);
-			right_it++;
+			result.push_back(right[j++]);
 		}
 	}
 
-	while (left_it < left.size()) {
-		result.push_back(left[left_it]);
-		left_it++;
+	while (i < left.size()) {
+		result.push_back(left[i++]);
 	}
 
-	while (right_it < right.size()) {
-		result.push_back(right[right_it]);
-		right_it++;
+	while (j < right.size()) {
+		result.push_back(right[j++]);
 	}
 
 	return result;
@@ -200,7 +184,7 @@ int partition(vector<T>& list, int left, int right, int pivotIndex)
 
 	int storeIndex = left;
 	for (int i=left; i < right; ++i) {
-		if (COMPARE(list[i], pivotValue) == 2) { //(list[i] < pivotValue) {
+		if (COMPARE(list[i], pivotValue) == 2) {
 			T tmp = list[i];
 			list[i] = list[storeIndex];
 			list[storeIndex++] = tmp;
