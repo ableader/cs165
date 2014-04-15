@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <vector>
+#include <sstream>
 #include "COMPARE.c"
 using namespace std;
 
@@ -17,13 +18,19 @@ vector<T> quickSort(vector<T>& v);
 template <typename T>
 vector<T> concatenate(const vector<T>& greater, int pivot, const vector<T>& less);
 template <typename T>
+vector<T> mergeSort(vector<T>& v);
+template <typename T>
+vector<T> merge(vector<T>& left, vector<T>& right);
+template <typename T>
+string vectorToString(const vector<T>& v);
+template <typename T>
 T quickSelect(vector<T>& list, int left, int right, int n);
 template <typename T>
 int partition(vector<T>& list, int left, int right, int pivotIndex);
 
 int main() {
 	int total = 0;
-	int max = 1;
+	int max = 10;
 	for (int i=0; i < max; ++i) {
 		int c = doalg(15, 3);
 		//cout << "comparison = " << c << endl;
@@ -42,18 +49,17 @@ int doalg(int n, int k)
 		indexArray.push_back(i+1);
 	}
 
-	vector<int> result = quickSort(indexArray);
-	int* best = new int[k+1];
-	for (int i=1; i <= k; ++i) {
-		best[i] = result[i-1];
-	}
+	cout << "indexArray = " << vectorToString(indexArray) << endl;
 
-	for (unsigned int i=0; i < result.size(); ++i) {
-		cout << result[i] << " ";
-	} cout << endl;
 
-	int found = quickSelect(indexArray, 0, n-1, n-1);
-	cout << "found = " << found << endl;
+
+//	vector<int> result = quickSort(indexArray);
+//	int* best = new int[k+1];
+//	for (int i=1; i <= k; ++i) {
+//		best[i] = result[i-1];
+//	}
+//
+//	cout << "result = " << vectorToString(result) << endl;
 
 	int comparisons = COMPARE(-1, k, best);
 	return comparisons;
@@ -99,6 +105,61 @@ vector<T> concatenate(const vector<T>& greater, int pivot, const vector<T>& less
 }
 
 template <typename T>
+vector<T> mergeSort(vector<T>& v)
+{
+	if (v.size() <= 1) return v;
+
+	typename vector<T>::iterator middle = v.begin() + (v.size() / 2);
+	vector<T> left(v.begin(), middle);
+	vector<T> right(middle, v.end());
+
+	left = mergeSort(left);
+	right = mergeSort(right);
+	return merge(left, right);
+}
+
+template <typename T>
+vector<T> merge(vector<T>& left, vector<T>& right)
+{
+	vector<T> result;
+	unsigned int left_it = 0, right_it = 0;
+
+	while (left_it < left.size() && right_it < right.size()) {
+		if (COMPARE(left[left_it], right[right_it]) == 1) {//(left[left_it] < right[right_it]) {
+			result.push_back(left[left_it]);
+			left_it++;
+		}
+		else {
+			result.push_back(right[right_it]);
+			right_it++;
+		}
+	}
+
+	while (left_it < left.size()) {
+		result.push_back(left[left_it]);
+		left_it++;
+	}
+
+	while (right_it < right.size()) {
+		result.push_back(right[right_it]);
+		right_it++;
+	}
+
+	return result;
+}
+
+template <typename T>
+string vectorToString(const vector<T>& v)
+{
+	stringstream ss;
+	for (int i=0; i < v.size(); ++i) {
+		ss << v[i] << " ";
+	}
+	return ss.str();
+}
+
+
+template <typename T>
 T quickSelect(vector<T>& list, int left, int right, int n)
 {
 	if (left == right)
@@ -139,3 +200,4 @@ int partition(vector<T>& list, int left, int right, int pivotIndex)
 
 	return storeIndex;
 }
+
