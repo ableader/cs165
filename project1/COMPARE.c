@@ -43,10 +43,6 @@ int COMPARE(int arg1, int arg2, ...) {
 		}
 		comp = 0;
 		size = arg2;
-		// TODO: remove test code
-//		std::cout << "number = ";
-//		for (int i=1; i <= arg2; ++i) std::cout << number[i] << " ";
-//		std::cout << std::endl;
 		return(0);
 	}
 	if (arg1==-1) {
