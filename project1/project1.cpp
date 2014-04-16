@@ -34,8 +34,16 @@ int main() {
 	int k[] = { 3, 10, 20, 40 };
 	int testRuns = 1000;
 
+	cout.setf(ios::fixed,ios::floatfield);
+	cout.precision(3);
+	cout << "---------------------------------------------------" << endl;
+	cout << setw(8) << "n" << setw(5) << "k" << setw(10) << "Min." << setw(10) << "Max"
+			<< setw(15) << "Average" << endl;
+	cout << "---------------------------------------------------" << endl;
+
 	for (int i=0; i < 4; ++i) {
 		int worstCase = 0;
+		int bestCase = 0;
 		double sum = 0;
 
 		for (int j=0; j < testRuns; ++j) {
@@ -43,16 +51,14 @@ int main() {
 			if (c > worstCase) {
 				worstCase = c;
 			}
+			if (bestCase == 0 || c < bestCase) {
+				bestCase = c;
+			}
 			sum += c;
 		}
 
-		cout.setf(ios::fixed,ios::floatfield);
-		cout.precision(3);
-		cout << "------------------------------------------------" << endl;
-		cout << "Performance on <n = " << n[i] << ", k = " << k[i] << ">" << endl;
-		cout << setw(15) << "Average =" << setw(15) << (double)sum / testRuns << endl;
-		cout << setw(15) << "Worst Case =" << setw(15) << worstCase << endl;
-		cout << endl;
+		cout << setw(8) << n[i] << setw(5) << k[i] << setw(10) << bestCase
+				<< setw(10) << worstCase << setw(15) << (double)sum / testRuns << endl;
 	}
 
 	return 0;
