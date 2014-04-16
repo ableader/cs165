@@ -1,9 +1,10 @@
 //============================================================================
-// Name        : ics165-p1.cpp
-// Author      : Gregory Jeckell, Andrew Leader
-// Version     :
-// Copyright   :
-// Description : Hello World in C++, Ansi-style
+// Name        : project1.cpp
+// Course      : CS165 Project in Algorithms
+// Authors     : Gregory Jeckell, Andrew Leader
+// Description : Finds the indices of array elements that have the k
+//				 largest values, in descending value order, from an
+//				 array of n elements. Outputs metrics on algorithm.
 //============================================================================
 
 #include <iostream>
