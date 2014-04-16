@@ -9,7 +9,6 @@
 
 #include <iostream>
 #include <vector>
-#include <sstream>
 #include <cstdlib>
 #include <iomanip>
 #include "COMPARE.c"
