@@ -32,12 +32,13 @@ int partition(vector<T>& list, int left, int right, int pivotIndex);
 int main() {
 	int n[] = { 15, 100, 1000, 10000 };
 	int k[] = { 3, 10, 20, 40 };
+	int testRuns = 1000;
 
 	for (int i=0; i < 4; ++i) {
 		int worstCase = 0;
 		double sum = 0;
 
-		for (int j=0; j < n[i]; ++j) {
+		for (int j=0; j < testRuns; ++j) {
 			int c = doalg(n[i], k[i]);
 			if (c > worstCase) {
 				worstCase = c;
@@ -49,7 +50,7 @@ int main() {
 		cout.precision(3);
 		cout << "------------------------------------------------" << endl;
 		cout << "Performance on <n = " << n[i] << ", k = " << k[i] << ">" << endl;
-		cout << setw(15) << "Average =" << setw(15) << (double)sum / n[i] << endl;
+		cout << setw(15) << "Average =" << setw(15) << (double)sum / testRuns << endl;
 		cout << setw(15) << "Worst Case =" << setw(15) << worstCase << endl;
 		cout << endl;
 	}
