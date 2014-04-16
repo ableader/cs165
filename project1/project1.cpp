@@ -10,6 +10,7 @@
 #include <vector>
 #include <sstream>
 #include <cstdlib>
+#include <iomanip>
 #include "COMPARE.c"
 using namespace std;
 
@@ -25,18 +26,33 @@ vector<T> merge(vector<T>& left, vector<T>& right);
 template <typename T>
 string vectorToString(const vector<T>& v);
 template <typename T>
-T quickSelect(vector<T>& list, int left, int right, int n);
+int quickSelect(vector<T>& list, int left, int right, int n);
 template <typename T>
 int partition(vector<T>& list, int left, int right, int pivotIndex);
 
 int main() {
-	int total = 0;
-	int max = 1000;
-	for (int i=0; i < max; ++i) {
-		int c = doalg(10000, 500);
-		total += c;
+	int n[] = { 15, 100, 1000, 10000 };
+	int k[] = { 3, 10, 20, 40 };
+
+	for (int i=0; i < 4; ++i) {
+		int worstCase = 0;
+		double sum = 0;
+		for (int j=0; j < n[i]; ++j) {
+			int c = doalg(n[i], k[i]);
+			if (c > worstCase) {
+				worstCase = c;
+			}
+			sum += c;
+		}
+		cout.setf(ios::fixed,ios::floatfield);
+		cout.precision(3);
+		cout << "------------------------------------------------" << endl;
+		cout << "Performance on <n = " << n[i] << ", k = " << k[i] << ">" << endl;
+		cout << setw(15) << "Average =" << setw(15) << (double)sum / n[i] << endl;
+		cout << setw(15) << "Worst Case =" << setw(15) << worstCase << endl;
+		cout << endl;
 	}
-	cout << "average = " << (double)total / max << endl;
+
 	return 0;
 }
 
@@ -49,14 +65,14 @@ int doalg(int n, int k)
 		indexArray.push_back(i+1);
 	}
 
-	int found = quickSelect(indexArray, 0, indexArray.size()-1, n-1-k);
+	int found = quickSelect(indexArray, 0, indexArray.size()-1, n-k);
 
 	vector<int> partialSort;
-	for (unsigned int i=found+1; i < indexArray.size(); ++i) {
+	for (unsigned int i=found; i < indexArray.size(); ++i) {
 		partialSort.push_back(indexArray[i]);
 	}
 
-	vector<int> result = quickSort(partialSort);
+	vector<int> result = mergeSort(partialSort);
 	int* best = new int[k+1];
 	for (int i=1; i <= k; ++i) {
 		best[i] = result[i-1];
@@ -71,7 +87,7 @@ template <typename T>
 vector<T> quickSort(vector<T>& v)
 {
 	if (v.size() <= 1) { return v; }
-	int pivot = v.size() / 2;
+	int pivot = (rand() % (int)v.size());
 	vector<T> less;
 	vector<T> greater;
 
@@ -157,15 +173,15 @@ string vectorToString(const vector<T>& v)
 
 
 template <typename T>
-T quickSelect(vector<T>& list, int left, int right, int n)
+int quickSelect(vector<T>& list, int left, int right, int n)
 {
 	if (left == right)
-		return left;//list[left];
+		return left;
 	int pivotIndex = left + (rand() % (int)(right - left + 1));
 	pivotIndex = partition(list, left, right, pivotIndex);
 
 	if (pivotIndex == n)
-		return n;//list[n];
+		return n;
 	else if (n < pivotIndex)
 		return quickSelect(list, left, pivotIndex-1, n);
 	else
