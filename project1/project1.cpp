@@ -38,7 +38,7 @@ int main() {
 	cout.precision(3);
 	cout << "---------------------------------------------------" << endl;
 	cout << setw(8) << "n" << setw(5) << "k" << setw(10) << "Min." << setw(10) << "Max"
-			<< setw(15) << "Average" << endl;
+			<< setw(15) << "Avg." << endl;
 	cout << "---------------------------------------------------" << endl;
 
 	for (int i=0; i < 4; ++i) {
