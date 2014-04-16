@@ -3,8 +3,8 @@
 // Course      : CS165 Project in Algorithms
 // Authors     : Gregory Jeckell, Andrew Leader
 // Description : Finds the indices of array elements that have the k
-//				 largest values, in descending value order, from an
-//				 array of n elements. Outputs metrics on algorithm.
+//               largest values, in descending value order, from an
+//               array of n elements. Outputs metrics on algorithm.
 //============================================================================
 
 #include <iostream>
@@ -25,8 +25,6 @@ vector<T> mergeSort(vector<T>& v);
 template <typename T>
 vector<T> merge(vector<T>& left, vector<T>& right);
 template <typename T>
-string vectorToString(const vector<T>& v);
-template <typename T>
 int quickSelect(vector<T>& list, int left, int right, int n);
 template <typename T>
 int partition(vector<T>& list, int left, int right, int pivotIndex);
@@ -38,6 +36,7 @@ int main() {
 	for (int i=0; i < 4; ++i) {
 		int worstCase = 0;
 		double sum = 0;
+
 		for (int j=0; j < n[i]; ++j) {
 			int c = doalg(n[i], k[i]);
 			if (c > worstCase) {
@@ -45,6 +44,7 @@ int main() {
 			}
 			sum += c;
 		}
+
 		cout.setf(ios::fixed,ios::floatfield);
 		cout.precision(3);
 		cout << "------------------------------------------------" << endl;
@@ -82,7 +82,6 @@ int doalg(int n, int k)
 	int comparisons = COMPARE(-1, k, best);
 	return comparisons;
 }
-
 
 template <typename T>
 vector<T> quickSort(vector<T>& v)
@@ -161,17 +160,6 @@ vector<T> merge(vector<T>& left, vector<T>& right)
 
 	return result;
 }
-
-template <typename T>
-string vectorToString(const vector<T>& v)
-{
-	stringstream ss;
-	for (int i=0; i < v.size(); ++i) {
-		ss << v[i] << " ";
-	}
-	return ss.str();
-}
-
 
 template <typename T>
 int quickSelect(vector<T>& list, int left, int right, int n)
